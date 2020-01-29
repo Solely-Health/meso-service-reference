@@ -13,6 +13,12 @@ func main() {
 		})
 	})
 
+	r.GET("/hello", func(c *gin.Context) {
+		c.JSON(200, gin.H{
+			"message": database.PrintHello(),
+		})
+	})
+
 	r.GET("/animal/:name", func(c *gin.Context) {
 		animal, err := database.GetAnimal(c.Param("name"))
 		if err != nil {

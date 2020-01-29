@@ -48,6 +48,10 @@ func GetAnimal(name string) (*animal, error) {
 	return nil, errors.New("No animal found")
 }
 
+func PrintHello() string {
+	return "Hello World"
+}
+
 func er(msg interface{}) {
 	fmt.Println("Error:", msg)
 	os.Exit(1)
