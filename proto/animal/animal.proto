@@ -1,0 +1,24 @@
+// meso-service-reference/proto/animal/animal.proto
+syntax = "proto3";
+
+package animal; 
+
+service AnimalService {
+  rpc GetAnimals(GetRequest) returns (Response) {}
+}
+
+message Animal {
+  string id = 1;
+  string description = 2;
+  int32 weight = 3;
+  string vessel_id = 5;
+}
+
+message GetRequest {}
+
+message Response {
+  bool created = 1;
+  Animal animal = 2;
+}
+
+message Test {}
