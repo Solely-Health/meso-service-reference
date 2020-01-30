@@ -11,7 +11,6 @@ message Animal {
   string id = 1;
   string description = 2;
   int32 weight = 3;
-  string vessel_id = 5;
 }
 
 message GetRequest {}

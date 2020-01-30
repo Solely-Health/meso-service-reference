@@ -1,9 +1,23 @@
 package main
 
 import (
+	"context"
 	"github.com/gin-gonic/gin"
 	"github.com/meso-org/meso-service-reference/database"
+	pb "github.com/meso-org/meso-service-reference/proto/animal"
+	"google.golang.org/grpc"
 )
+
+/**
+https://medium.com/pantomath/how-we-use-grpc-to-build-a-client-server-system-in-go-dd20045fa1c2
+*/
+type Server struct {
+}
+
+func (s *Server) GetAnimals(ctx context.Context, req *pb.Animal) (*pb.Response, error) {
+
+	return &pb.Response{Created: true, pb.Animal: {}}, nil
+}
 
 func main() {
 	r := gin.Default()
@@ -28,5 +42,9 @@ func main() {
 		c.JSON(200, animal)
 	})
 
+	// use the grpc library to create a new server and then register the protobuf server.
+	s := grpc.NewServer()
+
+	pb.RegisterAnimalServiceServer(s)
 	r.Run(":3000")
 }

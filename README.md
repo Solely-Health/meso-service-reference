@@ -17,5 +17,5 @@ In this directory exists an internal package called 'database', this is a rough 
 
 `/proto`
 In this directory is where we keep the protobuf files. The protobuf definitions are stored inside the `animal.proto` file. 
-The command: `protoc -I animal animal/animal.proto --go_out=plugin=grpc:animal` is ran to generate/compile the animal.pb.go file.
+The command: `protoc -I animal animal/animal.proto --go_out=plugins=grpc:animal` is ran to generate/compile the animal.pb.go file.
 

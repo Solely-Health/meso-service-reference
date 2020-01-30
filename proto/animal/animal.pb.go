@@ -4,8 +4,12 @@
 package animal
 
 import (
+	context "context"
 	fmt "fmt"
 	proto "github.com/golang/protobuf/proto"
+	grpc "google.golang.org/grpc"
+	codes "google.golang.org/grpc/codes"
+	status "google.golang.org/grpc/status"
 	math "math"
 )
 
@@ -217,4 +221,84 @@ var fileDescriptor_900753348fe370c9 = []byte{
 	0xe0, 0xe4, 0x85, 0x24, 0xee, 0xef, 0xe1, 0x2c, 0x4f, 0x9e, 0x29, 0x4c, 0xdc, 0x13, 0xde, 0xa6,
 	0x4f, 0x33, 0x13, 0xc4, 0xb2, 0xfe, 0x27, 0x72, 0x79, 0x5e, 0x58, 0xd1, 0x31, 0x47, 0x6f, 0x2a,
 	0x9d, 0xea, 0xe6, 0x37, 0x00, 0x00, 0xff, 0xff, 0xe3, 0xba, 0xdf, 0x63, 0x3a, 0x01, 0x00, 0x00,
+}
+
+// Reference imports to suppress errors if they are not otherwise used.
+var _ context.Context
+var _ grpc.ClientConn
+
+// This is a compile-time assertion to ensure that this generated file
+// is compatible with the grpc package it is being compiled against.
+const _ = grpc.SupportPackageIsVersion4
+
+// AnimalServiceClient is the client API for AnimalService service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
+type AnimalServiceClient interface {
+	GetAnimals(ctx context.Context, in *GetRequest, opts ...grpc.CallOption) (*Response, error)
+}
+
+type animalServiceClient struct {
+	cc *grpc.ClientConn
+}
+
+func NewAnimalServiceClient(cc *grpc.ClientConn) AnimalServiceClient {
+	return &animalServiceClient{cc}
+}
+
+func (c *animalServiceClient) GetAnimals(ctx context.Context, in *GetRequest, opts ...grpc.CallOption) (*Response, error) {
+	out := new(Response)
+	err := c.cc.Invoke(ctx, "/animal.AnimalService/GetAnimals", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// AnimalServiceServer is the server API for AnimalService service.
+type AnimalServiceServer interface {
+	GetAnimals(context.Context, *GetRequest) (*Response, error)
+}
+
+// UnimplementedAnimalServiceServer can be embedded to have forward compatible implementations.
+type UnimplementedAnimalServiceServer struct {
+}
+
+func (*UnimplementedAnimalServiceServer) GetAnimals(ctx context.Context, req *GetRequest) (*Response, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetAnimals not implemented")
+}
+
+func RegisterAnimalServiceServer(s *grpc.Server, srv AnimalServiceServer) {
+	s.RegisterService(&_AnimalService_serviceDesc, srv)
+}
+
+func _AnimalService_GetAnimals_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AnimalServiceServer).GetAnimals(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/animal.AnimalService/GetAnimals",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AnimalServiceServer).GetAnimals(ctx, req.(*GetRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+var _AnimalService_serviceDesc = grpc.ServiceDesc{
+	ServiceName: "animal.AnimalService",
+	HandlerType: (*AnimalServiceServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "GetAnimals",
+			Handler:    _AnimalService_GetAnimals_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "animal.proto",
 }
